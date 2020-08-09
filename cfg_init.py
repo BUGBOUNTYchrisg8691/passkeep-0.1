@@ -4,7 +4,7 @@ import json
 import os
 import pymysql
 
-FPATH = '/home/chrisg/projects/passkeep/database.json'
+FPATH = ''
 
 
 def config():
