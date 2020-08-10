@@ -49,8 +49,8 @@ def main():
 
         sql_query = 'create table if not exists entries( id int(16) not null' \
             ' auto_increment, service varchar(256) not null, username varcha' \
-            'r(256) not null, password varchar(256) not null, salt varbinary' \
-            '(64) not null, PRIMARY KEY (id));'
+            'r(256) not null, password varchar(256) not null, salt varchar(2' \
+            '56) not null, PRIMARY KEY (id));'
 
         cursor.execute(sql_query)
 

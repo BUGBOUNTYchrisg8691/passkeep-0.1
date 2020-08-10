@@ -37,7 +37,7 @@ def main():
         print(username)
         passwd = creds.get_password()
         print(passwd)
-        salt = creds.get_salt()
+        salt = creds.get_salt().decode()
         print(salt)
 
         add_entry(conn=conn, service=service, username=username, passwd=passwd,
