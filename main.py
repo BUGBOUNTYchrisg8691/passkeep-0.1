@@ -45,9 +45,30 @@ def main():
         
     elif (action.lower() == 'e'):
         service = str(input('Enter service: '))
+        mast_pass = str(getpass('Enter master password: '))
+        confirm = str(getpass('Confirm master password: '))
+        if (mast_pass == confirm):
+            query = encrypt()
+        else:
+            print('Passwords did not match... Returning to main menu...')
+            time.sleep(3)
+            main()
 
-        conn = connect()
-        entry = query_entries(conn, service)
+        try:
+            conn = connect()
+            entry = query_entries(conn, service)
+            print(entry)
+
+            creds = Credentials(service=entry[1], username=[2],
+                                password=entry[3], salt=entry[4].encode())
+
+            creds.unhash_entry(mast_pass=mast_pass)
+
+            print(creds)
+
+        except Exception as e:
+            print(e)
+            
 
     elif (action.lower() == 'd'):
         try:

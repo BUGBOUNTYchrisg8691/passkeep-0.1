@@ -83,9 +83,11 @@ def query_entries(conn, query):
     try:
         cursor = conn.cursor()
 
-        sql_query = 'select service, username, password, salt from entries where service = ?;'
+        sql_query = 'select service, username, password, salt from entries w' \
+            'here service=%s;'
     
         cursor.execute(sql_query, query)
+        entry = cursor.fetchone()
 
     except ValueError as v_e:
         print(f'ValueError occured: {v_e}')
@@ -96,4 +98,4 @@ def query_entries(conn, query):
     finally:
         conn.close()
 
-    return cursor
+    return entry
