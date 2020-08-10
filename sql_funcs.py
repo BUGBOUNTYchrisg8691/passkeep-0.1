@@ -37,11 +37,12 @@ def add_entry(conn, service, username, passwd, salt):
         cursor = conn.cursor()
 
         sql_query = 'insert into entries(service, username, password, salt) ' \
-            'values({},{},{},{});'
+            'values("%s", "%s", "%s", "%s")' % (service, username, passwd, salt)
 
         #  entry = tuple(service, username, passwd, salt)
 
-        cursor.execute(sql_query.format(service, username, passwd, salt))
+        cursor.execute(sql_query)
+        conn.commit()
 
     except ValueError as v_e:
         print(f'ValueError occured: {v_e}')
