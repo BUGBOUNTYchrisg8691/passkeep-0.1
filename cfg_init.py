@@ -4,7 +4,7 @@ import json
 import os
 import pymysql
 
-FPATH = ''
+#  FPATH = ''
 
 
 def config():
@@ -37,7 +37,7 @@ def main():
     user = os.environ.get('SQL_DO_USER')
     password = os.environ.get('SQL_DO_PASS')
     host = os.environ.get('SQL_DO_HOST')
-    port = os.environ.get('SQL_DO_PORT')
+    port = int(os.environ.get('SQL_DO_PORT'))
     dbname = os.environ.get('SQL_DO_DB')
 
     try:
@@ -47,9 +47,10 @@ def main():
 
         cursor = conn.cursor()
 
-        sql_query = 'create table if not exists entries( primary_key int(4) ' \
-            'PRIMARY KEY, service varchar(64), username varchar(64), passwor' \
-            'd varchar(64), salt varchar(64));'
+        sql_query = 'create table if not exists entries( id int(16) not null' \
+            ' auto_increment, service varchar(256) not null, username varcha' \
+            'r(256) not null, password varchar(256) not null, salt varchar(6' \
+            '4) not null, PRIMARY KEY (id));'
 
         cursor.execute(sql_query)
 

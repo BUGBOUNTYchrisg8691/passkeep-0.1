@@ -18,7 +18,8 @@ def main():
           'ntials. Please write it down somewhere and keep it somewhere safe')
     print('------------------------------------------')
 
-    action = str(input('Would you like to (a)dd an entry, (e)dit an entry, or (d)isplay all entries?\n---> ' ))
+    action = str(input('Would you like to (a)dd an entry, (e)dit an entry, or '
+                       '(d)isplay all entries?\n---> ' ))
 
     if (action.lower() == 'a'):
         creds = Credentials()
@@ -26,21 +27,37 @@ def main():
         creds.set_username()
         creds.set_password()
         print('New entry: ' + creds.__str__())
+        
         creds.hash_entry()
-        print(creds)
-        creds.unhash_entry()
-        print(creds)
+        conn = connect()
 
+        service = creds.get_service()
+        print(len(service))
+        username = creds.get_username()
+        print(len(username))
+        passwd = creds.get_password()
+        print(len(passwd))
+        salt = creds.get_salt()
+        print(len(salt))
+
+        add_entry(conn=conn, service=service, username=username, passwd=passwd,
+                  salt=salt)
+        
     elif (action.lower() == 'e'):
         service = str(input('Enter service: '))
 
         conn = connect()
         entry = query_entries(conn, service)
+        print(entry)
 
     elif (action.lower() == 'd'):
         try:
             conn = connect()
             print('Connected to database...')
+
+            entries = query_all_entries(conn)
+        
+            print(entries)
 
         except Exception as e:
             print(e)

@@ -4,7 +4,7 @@ import datetime
 import os
 import pymysql
 
-FPATH = ''
+#  FPATH = ''
 
 
 def connect():
@@ -22,10 +22,10 @@ def connect():
     user = os.environ.get('SQL_DO_USER')
     password = os.environ.get('SQL_DO_PASS')
     host = os.environ.get('SQL_DO_HOST')
-    port = os.environ.get('SQL_DO_PORT')
+    port = int(os.environ.get('SQL_DO_PORT'))
     dbname = os.environ.get('SQL_DO_DB')
 
-    conn = pymysql.connect(host=host, user=user, password=password, port=port,
+    conn = pymysql.Connect(host=host, user=user, password=password, port=port,
         database=dbname)
 
     return conn
@@ -37,11 +37,11 @@ def add_entry(conn, service, username, passwd, salt):
         cursor = conn.cursor()
 
         sql_query = 'insert into entries( service, username, password, salt )' \
-            ' values(?,?,?,?);'
+            ' values(%s,%s,%s,%s);'
 
-        entry = tuple(service, username, passwd, salt)
+        #  entry = tuple(service, username, passwd, salt)
 
-        cursor.execute(sql_query, entry)
+        cursor.execute(sql_query, [service, username, passwd, salt])
 
     except ValueError as ve:
         print(f'ValueError occured: {ve}')
@@ -55,13 +55,12 @@ def add_entry(conn, service, username, passwd, salt):
     finally:
         conn.close()
 
-def get_all_entries(conn):
+def query_all_entries(conn):
 
     try:
         cursor = conn.cursor()
 
         sql_query = 'select (*) from entries;'
-    
     
         cursor.execute(sql_query)
 
@@ -74,17 +73,16 @@ def get_all_entries(conn):
     finally:
         conn.close()
 
-def query_entries(conn, service):
+    return cursor
+
+def query_entries(conn, query):
 
     try:
         cursor = conn.cursor()
 
-        sql_query = 'select username, password from entries where service = ?;'
+        sql_query = 'select service, username, password, salt from entries where service = ?;'
     
-        entry = [service]
-        entry.append(cursor.execute(sql_query, service))
-
-        return entry
+        cursor.execute(sql_query, query)
 
     except ValueError as v_e:
         print(f'ValueError occured: {v_e}')
@@ -95,3 +93,4 @@ def query_entries(conn, service):
     finally:
         conn.close()
 
+    return cursor

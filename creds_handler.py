@@ -43,6 +43,10 @@ class Credentials:
         return self.password
 
 
+    def get_salt(self):
+        return self.__salt
+
+
     def set_service(self):
         self.service = str(input('Enter service: '))
 
@@ -92,7 +96,7 @@ class Credentials:
 
         else:
             print('An error occurred...')
-            time.sleep()
+            time.sleep(3)
             self.hash_entry()
     
     def unhash_entry(self):
@@ -106,6 +110,6 @@ class Credentials:
 
         else:
             print('An error occurred...')
-            time.sleep()
+            time.sleep(3)
             self.unhash_entry()
 
