@@ -36,8 +36,7 @@ def add_entry(conn, service, username, passwd, salt):
     try:
         cursor = conn.cursor()
 
-        sql_query = 'insert into entries( service, username, password, salt )' \
-            ' values(%s,%s,%s,%s);'
+        sql_query = '''insert into entries( 'service', 'username', 'password', 'salt' ) values(%s,%s,%s,%s);'''
 
         #  entry = tuple(service, username, passwd, salt)
 
