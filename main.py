@@ -32,16 +32,15 @@ def main():
         conn = connect()
 
         service = creds.get_service()
-        print(service)
         username = creds.get_username()
-        print(username)
         passwd = creds.get_password()
-        print(passwd)
         salt = creds.get_salt().decode()
-        print(salt)
 
         add_entry(conn=conn, service=service, username=username, passwd=passwd,
                   salt=salt)
+
+        time.sleep(5)
+        main()
         
     elif (action.lower() == 'e'):
         service = str(input('Enter service: '))

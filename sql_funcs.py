@@ -52,7 +52,7 @@ def add_entry(conn, service, username, passwd, salt):
         print(f'Exception occurred: {e}')
 
     else:
-        print(f'Entry successfully added: {service} | {username} | {passwd}')
+        print('Entry successfully added to DB. Returning to main menu.')
 
     finally:
         conn.close()
