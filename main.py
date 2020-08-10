@@ -32,13 +32,13 @@ def main():
         conn = connect()
 
         service = creds.get_service()
-        print(len(service))
+        print(service)
         username = creds.get_username()
-        print(len(username))
+        print(username)
         passwd = creds.get_password()
-        print(len(passwd))
+        print(passwd)
         salt = creds.get_salt()
-        print(len(salt))
+        print(salt)
 
         add_entry(conn=conn, service=service, username=username, passwd=passwd,
                   salt=salt)
