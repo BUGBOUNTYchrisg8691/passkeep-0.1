@@ -62,9 +62,10 @@ def query_all_entries(conn):
     try:
         cursor = conn.cursor()
 
-        sql_query = 'select (*) from entries;'
+        sql_query = 'select * from entries;'
     
         cursor.execute(sql_query)
+        entries = cursor.fetchall()
 
     except ValueError as v_e:
         print(f'ValueError occured: {v_e}')
@@ -75,7 +76,7 @@ def query_all_entries(conn):
     finally:
         conn.close()
 
-    return cursor
+    return entries
 
 def query_entries(conn, query):
 

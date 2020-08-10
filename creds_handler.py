@@ -85,31 +85,52 @@ class Credentials:
             self.set_password()
 
 
-    def hash_entry(self):
-        mast_pass = str(getpass('Enter master password: '))
-        confirm = str(getpass('Confirm master password: '))
+    def hash_entry(self, mast_pass=None):
+        if mast_pass == None:
+            mast_pass = str(getpass('Enter master password: '))
+            confirm = str(getpass('Confirm master password: '))
 
-        if (mast_pass == confirm):
-            self.service = encrypt(self.service, mast_pass, self.__salt)
-            self.username = encrypt(self.username, mast_pass, self.__salt)
-            self.password = encrypt(self.password, mast_pass, self.__salt)
+            if (mast_pass == confirm):
+                pass
 
-        else:
-            print('An error occurred...')
-            time.sleep(3)
-            self.hash_entry()
-    
-    def unhash_entry(self):
-        mast_pass = str(getpass('Enter master password: '))
-        confirm = str(getpass('Confirm master password: '))
+            else:
+                print('An error occurred...')
+                time.sleep(3)
+                self.hash_entry()
+            
+        self.service = encrypt(self.service, mast_pass, self.__salt)
+        self.username = encrypt(self.username, mast_pass, self.__salt)
+        self.password = encrypt(self.password, mast_pass, self.__salt)
+   
 
-        if (mast_pass == confirm):
-            self.service = decrypt(self.service, mast_pass, self.__salt)
-            self.username = decrypt(self.username, mast_pass, self.__salt)
-            self.password = decrypt(self.password, mast_pass, self.__salt)
+    def unhash_entry(self, mast_pass=None):
+        if mast_pass == None:
+            mast_pass = str(getpass('Enter master password: '))
+            confirm = str(getpass('Confirm master password: '))
 
-        else:
-            print('An error occurred...')
-            time.sleep(3)
-            self.unhash_entry()
+            if (mast_pass == confirm):
+                pass
+
+            else:
+                print('An error occurred...')
+                time.sleep(3)
+                self.unhash_entry()
+            
+        self.service = decrypt(self.service, mast_pass, self.__salt)
+        self.username = decrypt(self.username, mast_pass, self.__salt)
+        self.password = decrypt(self.password, mast_pass, self.__salt)
+
+#  def unhash_entry(self):
+        #  mast_pass = str(getpass('Enter master password: '))
+        #  confirm = str(getpass('Confirm master password: '))
+#
+        #  if (mast_pass == confirm):
+            #  self.service = decrypt(self.service, mast_pass, self.__salt)
+            #  self.username = decrypt(self.username, mast_pass, self.__salt)
+            #  self.password = decrypt(self.password, mast_pass, self.__salt)
+#
+        #  else:
+            #  print('An error occurred...')
+            #  time.sleep(3)
+            #  self.unhash_entry()
 

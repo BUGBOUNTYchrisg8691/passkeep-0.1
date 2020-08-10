@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-from sql_funcs import *
-from encryption import *
 from creds_handler import Credentials
+from encryption import *
+from getpass import getpass
+from sql_funcs import *
 import bcrypt
 import pymysql
 from pymysql.err import OperationalError
@@ -47,7 +48,6 @@ def main():
 
         conn = connect()
         entry = query_entries(conn, service)
-        print(entry)
 
     elif (action.lower() == 'd'):
         try:
@@ -55,9 +55,28 @@ def main():
             print('Connected to database...')
 
             entries = query_all_entries(conn)
-        
-            print(entries)
+            
+            entry_list = []
+            mast_pass = str(getpass('Enter master password: '))
+            confirm = str(getpass('Confirm master password: '))
+            if mast_pass == confirm:
+                pass
+            else:
+                print('Passwords did not match... Returning to main menu...')
+                time.sleep(3)
+                main()
 
+            for entry in entries:
+                creds = Credentials(service=entry[1], username=entry[2],
+                                    password=entry[3], salt=entry[4].encode())
+
+                creds.unhash_entry(mast_pass=mast_pass)
+
+                entry_list.append(creds)
+
+            for entry in entry_list:
+                print( entry )
+                
         except Exception as e:
             print(e)
 
