@@ -9,7 +9,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 
 def encrypt(input_str, mast_pass, salt):
-    
+
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
@@ -25,7 +25,7 @@ def encrypt(input_str, mast_pass, salt):
 
 
 def decrypt(input_str, mast_pass, salt):
-    
+
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
@@ -38,4 +38,3 @@ def decrypt(input_str, mast_pass, salt):
     f = Fernet(key)
 
     return f.decrypt(input_str.encode('utf-8')).decode('utf-8')
-

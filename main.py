@@ -6,8 +6,8 @@ from getpass import getpass
 from sql_funcs import *
 import bcrypt
 import pymysql
-from pymysql.err import OperationalError
 import time
+
 
 def main():
     print('----------Welcome to PassKeep.py----------')
@@ -19,8 +19,14 @@ def main():
           'ntials. Please write it down somewhere and keep it somewhere safe')
     print('------------------------------------------')
 
+    print('------------------Login-------------------')
+    name = str(input('Enter name: '))
+    mast_pass = str(input('Enter master password: '))
+    conn = connect()
+    login(conn=conn, full_name=name, password=mast_pass)
+
     action = str(input('Would you like to (a)dd an entry, (e)dit an entry, or '
-                       '(d)isplay all entries?\n---> ' ))
+                       '(d)isplay all entries?\n---> '))
 
     if (action.lower() == 'a'):
         creds = Credentials()
@@ -28,7 +34,7 @@ def main():
         creds.set_username()
         creds.set_password()
         print('New entry: ' + creds.__str__())
-        
+
         creds.hash_entry()
         conn = connect()
 
@@ -42,13 +48,16 @@ def main():
 
         time.sleep(5)
         main()
-        
+
     elif (action.lower() == 'e'):
         service = str(input('Enter service: '))
         mast_pass = str(getpass('Enter master password: '))
         confirm = str(getpass('Confirm master password: '))
+
         if (mast_pass == confirm):
-            query = encrypt()
+            pass
+            #  query = encrypt()
+
         else:
             print('Passwords did not match... Returning to main menu...')
             time.sleep(3)
@@ -68,7 +77,6 @@ def main():
 
         except Exception as e:
             print(e)
-            
 
     elif (action.lower() == 'd'):
         try:
@@ -76,12 +84,13 @@ def main():
             print('Connected to database...')
 
             entries = query_all_entries(conn)
-            
+
             entry_list = []
             mast_pass = str(getpass('Enter master password: '))
             confirm = str(getpass('Confirm master password: '))
-            if mast_pass == confirm:
+            if (mast_pass == confirm):
                 pass
+
             else:
                 print('Passwords did not match... Returning to main menu...')
                 time.sleep(3)
@@ -96,8 +105,8 @@ def main():
                 entry_list.append(creds)
 
             for entry in entry_list:
-                print( entry )
-                
+                print(entry)
+
         except Exception as e:
             print(e)
 
@@ -106,5 +115,5 @@ def main():
         time.sleep(5)
         main()
 
-if __name__ == '__main__':
+if (__name__ == '__main__'):
     main()
