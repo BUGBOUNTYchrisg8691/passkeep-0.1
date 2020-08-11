@@ -5,6 +5,7 @@ import os
 import pymysql
 import time
 from bcrypt import gensalt
+from encryption import *
 from getpass import getpass
 from sql_funcs import add_user
 
@@ -114,8 +115,10 @@ def main():
             conn = pymysql.Connect(host=host, port=port, user=user,
                                    password=password, database=dbname)
 
+            enc_mast_pass = encrypt(input_str=mast_pass, mast_pass=mast_pass,
+                                    salt=salt)
             add_user(conn=conn, first_name=fname, last_name=lname,
-                     master_password=mast_pass, salt=salt)
+                     hsh_mast_pass=enc_mast_pass, salt=salt)
 
         except ValueError as v_e:
             print(f'Value Error occurred: {v_e}')

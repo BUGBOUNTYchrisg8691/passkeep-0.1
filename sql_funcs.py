@@ -2,6 +2,8 @@
 
 import os
 import pymysql
+import sys
+import time
 from encryption import *
 
 #  FPATH = ''
@@ -31,7 +33,7 @@ def connect():
     return conn
 
 
-def add_user(conn, first_name, last_name, master_password, salt):
+def add_user(conn, first_name, last_name, hsh_mast_pass, salt):
     try:
         cursor = conn.cursor()
 
@@ -46,7 +48,7 @@ def add_user(conn, first_name, last_name, master_password, salt):
         cursor.execute('''INSERT INTO users (first_name, last_name)
                       VALUES (%s, %s);''', (first_name, last_name))
         cursor.execute('''INSERT INTO creds (master_password, mast_pass_salt)
-                       VALUES (%s, %s);''', (master_password, salt))
+                       VALUES (%s, %s);''', (hsh_mast_pass, salt))
         conn.commit()
 
     except ValueError as v_e:
@@ -68,10 +70,23 @@ def login(conn, full_name, password):
     lname = split_name[1]
 
     cursor = conn.cursor()
-    cursor.execute('''SELECT FROM users(id) WHERE first_name='%s'
-    AND last_name='%s';''')
-    user_id = cursor.fetchone()
-    print(user_id)
+    id_query = '''SELECT id FROM users WHERE first_name=%s AND last_name=%s;'''
+    cursor.execute(id_query, (fname, lname))
+    uid = cursor.fetchone()[0]
+
+    vrfy_query = '''SELECT master_password, mast_pass_salt FROM creds
+    WHERE user_id=%s'''
+    cursor.execute(vrfy_query, (uid))
+    hsh_mast_pass, mast_pass_salt = cursor.fetchone()
+    qrd_mast_pass = decrypt(input_str=hsh_mast_pass, mast_pass=password,
+                            salt=mast_pass_salt.encode())
+    if (password == qrd_mast_pass):
+        pass
+
+    else:
+        print('Login failed... Exiting...')
+        time.sleep(3)
+        sys.exit()
 
 
 def add_entry(conn, service, username, passwd, salt):
@@ -101,6 +116,7 @@ def add_entry(conn, service, username, passwd, salt):
     finally:
         conn.close()
 
+
 def query_all_entries(conn):
     try:
         cursor = conn.cursor()
@@ -120,6 +136,7 @@ def query_all_entries(conn):
         conn.close()
 
     return entries
+
 
 def query_entries(conn, query):
     try:

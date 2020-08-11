@@ -21,7 +21,7 @@ def main():
 
     print('------------------Login-------------------')
     name = str(input('Enter name: '))
-    mast_pass = str(input('Enter master password: '))
+    mast_pass = str(getpass('Enter master password: '))
     conn = connect()
     login(conn=conn, full_name=name, password=mast_pass)
 
@@ -114,6 +114,7 @@ def main():
         print('An error occurred...')
         time.sleep(5)
         main()
+
 
 if (__name__ == '__main__'):
     main()
