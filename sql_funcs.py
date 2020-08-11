@@ -94,14 +94,14 @@ def add_entry(conn, service, username, passwd, salt):
         cursor = conn.cursor()
 
         ent_stmnt = '''INSERT INTO entries (service, username, password, salt)
-        VALUES ('%s', '%s', '%s') % (service, username, passwd);'''
+        VALUES (%s, %s, %s);'''
 
-        slt_stmnt = '''INSERT INTO salts (salt) VALUES ('%s') % (salt);'''
+        slt_stmnt = '''INSERT INTO salts (salt) VALUES (%s);'''
 
         #  entry = tuple(service, username, passwd, salt)
 
-        cursor.execute(ent_stmnt)
-        cursor.execute(slt_stmnt)
+        cursor.execute(ent_stmnt, (service, username, passwd))
+        cursor.execute(slt_stmnt, [salt])
         conn.commit()
 
     except ValueError as v_e:

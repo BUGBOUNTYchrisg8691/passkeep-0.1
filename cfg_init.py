@@ -114,7 +114,7 @@ def main():
         try:
             conn = pymysql.Connect(host=host, port=port, user=user,
                                    password=password, database=dbname)
-
+        
             enc_mast_pass = encrypt(input_str=mast_pass, mast_pass=mast_pass,
                                     salt=salt)
             add_user(conn=conn, first_name=fname, last_name=lname,
