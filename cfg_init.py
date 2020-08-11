@@ -47,12 +47,77 @@ def main():
 
         cursor = conn.cursor()
 
-        sql_query = 'create table if not exists entries( id int(16) not null' \
-            ' auto_increment, service varchar(256) not null, username varcha' \
-            'r(256) not null, password varchar(256) not null, salt varchar(2' \
-            '56) not null, PRIMARY KEY (id));'
+        users_init = '''CREATE TABLE IF NOT EXISTS users(
+        id int NOT NULL AUTO_INCREMENT,
+        first_name varchar(256) NOT NULL,
+        last_name varchar(256) NOT NULL,
+        PRIMARY KEY (id));'''
 
-        cursor.execute(sql_query)
+        creds_init = '''CREATE TABLE IF NOT EXISTS creds(
+        user_id int,
+        master_password varchar(256) NOT NULL,
+        mast_pass_salt varchar(64) NOT NULL,
+        PRIMARY KEY (user_id),
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE);'''
+
+        entries_init = '''CREATE TABLE IF NOT EXISTS entries(
+        entry_id int NOT NULL AUTO_INCREMENT,
+        user_id int,
+        service varchar(256) NOT NULL,
+        username varchar(256) NOT NULL,
+        password varchar(256) NOT NULL,
+        PRIMARY KEY (entry_id),
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE);
+                       '''
+
+        salts_init = '''CREATE TABLE IF NOT EXISTS salts(
+        salt_id int,
+        salt varchar(64) NOT NULL,
+        PRIMARY KEY (salt_id),
+        FOREIGN KEY (salt_id) REFERENCES entries (entry_id)
+            ON DELETE CASCADE);'''
+        
+        
+        cursor.execute(users_init)
+        cursor.execute(creds_init)
+        cursor.execute(entries_init)
+        cursor.execute(salts_init)
+
+        #  cursor.execute('''CREATE TABLE IF NOT EXISTS users(
+                            #  id int NOT NULL AUTO_INCREMENT,
+                            #  first_name varchar(256) NOT NULL,
+                            #  last_name varchar(256) NOT NULL,
+                            #  PRIMARY KEY (id));
+                       #  ''')
+#
+        #  cursor.execute('''CREATE TABLE IF NOT EXISTS creds(
+                            #  user_id int,
+                            #  master_password varchar(256) NOT NULL,
+                            #  mast_pass_salt varchar(64) NOT NULL,
+                            #  PRIMARY KEY (user_id),
+                            #  FOREIGN KEY (user_id) REFERENCES users (id)
+                                #  ON DELETE CASCADE);
+                       #  ''')
+#
+        #  cursor.execute('''CREATE TABLE IF NOT EXISTS entries(
+                            #  entry_id int NOT NULL AUTO_INCREMENT,
+                            #  user_id int,
+                            #  service varchar(256) NOT NULL,
+                            #  username varchar(256) NOT NULL,
+                            #  password varchar(256) NOT NULL,
+                            #  PRIMARY KEY (entry_id),
+                            #  FOREIGN KEY (user_id),
+                            #  FOREIGN KEY (user_id) REFERENCES users (id)
+                                #  ON DELETE CASCADE);
+                       #  ''')
+#
+        #  cursor.execute('''CREATE TABLE IF NOT EXISTS salts(
+                            #  salt_id int,
+                            #  salt varchar(64) NOT NULL,
+                            #  PRIMARY KEY (salt_id),
+                            #  FOREIGN KEY (salt_id) REFERENCES entries (entry_id)
+                                #  ON DELETE CASCADE);
+                       #  ''')
 
     except ValueError as v_e:
         print(f'ValueError occurred: {v_e}')
