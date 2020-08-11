@@ -4,7 +4,7 @@ import datetime
 import os
 import pymysql
 
-#  FPATH = ''
+#  FPATH = ""
 
 
 def connect():
