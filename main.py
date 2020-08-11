@@ -103,7 +103,7 @@ def main():
 
     else:
         print('An error occurred...')
-        time.sleep(3)
+        time.sleep(5)
         main()
 
 if __name__ == '__main__':
