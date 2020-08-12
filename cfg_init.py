@@ -53,17 +53,19 @@ def main():
         cursor = conn.cursor()
 
         users_init = '''CREATE TABLE IF NOT EXISTS users(
-        id int(16) NOT NULL AUTO_INCREMENT,
-        first_name varchar(256) NOT NULL,
-        last_name varchar(256) NOT NULL,
+        id INT NOT NULL AUTO_INCREMENT,
+        first_name VARCHAR(256) NOT NULL,
+        last_name VARCHAR(256) NOT NULL,
+        email VARCHAR(64) NOT NULL,
         PRIMARY KEY (id));'''
 
         creds_init = '''CREATE TABLE IF NOT EXISTS creds(
-        user_id int(16) NOT NULL AUTO_INCREMENT,
+        cred_id INT NOT NULL AUTO_INCREMENT,
         master_password varchar(256) NOT NULL,
         mast_pass_salt varchar(64) NOT NULL,
-        PRIMARY KEY (user_id),
-        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE);'''
+        user_id INT NOT NULL AUTO_INCREMENT,
+        PRIMARY KEY (cred_id),
+        FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE);'''
 
         entries_init = '''CREATE TABLE IF NOT EXISTS entries(
         entry_id int(16) NOT NULL AUTO_INCREMENT,
