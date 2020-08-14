@@ -4,7 +4,7 @@ import os
 import sys
 import pymysql
 from bcrypt import gensalt
-from sql import DatabaseInteraction
+from package.models.sql import DatabaseInteraction
 
 
 class User:
