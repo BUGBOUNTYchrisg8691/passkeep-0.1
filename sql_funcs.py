@@ -33,22 +33,26 @@ def connect():
     return conn
 
 
-def add_user(conn, first_name, last_name, hsh_mast_pass, salt):
+def add_user(conn, uid, first_name, last_name, email, hsh_mast_pass, salt):
     try:
         cursor = conn.cursor()
 
         #  usr_stmnt = '''INSERT INTO users (first_name, last_name)
         #  VALUES ("%s", "%s") % (first_name, last_name);'''
-#
         #  crd_stmnt = '''INSERT INTO creds (master_password, mast_pass_salt)
         #  VALUES ("%s", "%s") % (master_password, salt);'''
 
         #  cursor.execute(usr_stmnt)
         #  cursor.execute(crd_stmnt)
-        cursor.execute('''INSERT INTO users (first_name, last_name)
-                      VALUES (%s, %s);''', (first_name, last_name))
-        cursor.execute('''INSERT INTO creds (master_password, mast_pass_salt)
-                       VALUES (%s, %s);''', (hsh_mast_pass, salt))
+        
+        cursor.execute('''INSERT INTO users (
+        first_name, last_name, email)
+        VALUES (%s, %s, %s);''', (first_name, last_name))
+        
+        cursor.execute('''INSERT INTO user_creds (
+        user_id, master_password, master_salt)
+        VALUES (%s, %s, %s);''', (hsh_mast_pass, salt))
+        
         conn.commit()
 
     except ValueError as v_e:

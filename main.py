@@ -20,6 +20,12 @@ def main():
     print('------------------------------------------')
 
     print('------------------Login-------------------')
+    op = str(input('Are you a (n)ew user or (e)xisting user: '))
+    if op.lower() == 'n':
+        first_name = str(input('Enter first name: '))
+        last_name = str(input('Enter last name: '))
+        email = str(input('Enter email: '))
+        
     name = str(input('Enter name: '))
     mast_pass = str(getpass('Enter master password: '))
     conn = connect()
