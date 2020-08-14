@@ -14,7 +14,7 @@ def encrypt(input_str, mast_pass, salt):
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
-        salt=salt,
+        salt=salt.encode('utf-8'),
         iterations=100000,
         backend=default_backend()
     )
@@ -30,7 +30,7 @@ def decrypt(input_str, mast_pass, salt):
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
-        salt=salt,
+        salt=salt.encode('utf-8'),
         iterations=100000,
         backend=default_backend()
     )

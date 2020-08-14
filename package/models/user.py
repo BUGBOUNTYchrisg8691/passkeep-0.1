@@ -42,10 +42,3 @@ class User:
             self.user_id = cursor.fetchone()[0]
         except Exception as e:
             sys.exit('An exception has occurred: ' + str(e))
-
-
-if __name__ == '__main__':
-    new_user = User('Chris', 'Girvin', 'chrisg@yahoo.com', 'password1')
-    new_user.get_user_id()
-    print(new_user.user_id)
-    print(__package__)

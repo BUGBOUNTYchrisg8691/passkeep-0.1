@@ -187,34 +187,3 @@ class DatabaseInteraction:
             sys.exit('An exception occurred: ' + str(e))
         else:
             print('Account successfuly deleted.')
-
-
-if __name__ == '__main__':
-    #  new_user = {
-        #  'first_name': 'Christopher',
-        #  'last_name': 'Girvin',
-        #  'email': 'chrisg@yahoo.com',
-        #  'master_password': 'password1',
-        #  'master_salt': 'testsalt'
-    #  }
-
-    #  user_entry = {
-        #  'email': 'chrisg@yahoo.com',
-        #  'user_id': 7,
-        #  'service': 'google',
-        #  'username': 'chrisg@yahoo.com',
-        #  'hashed_password': 'gAAAAABfNg6JT4l07Qg9DKGhSF5OmCd5irqv-5JW_yU-74dNs4XdFMqFK8vk7d5SMCe_H0Z02zQZrpH18-WcVkj6vI6JOfxJKNFMGhG_DKH4sMTY5MMFxPk=',
-        #  'salt': 'testsalt'
-#
-    #  }
-
-    entry_info = {
-        'option': 'password',
-        'entry_id': 18, 
-        'new_item': 'gAAAAABfNjgB2mMvxQiEiHRHxGxa9bhgbrJitqiTZOUzpWsrinj5iVOLkBFe8Hf95gBrfPx3hpbmfrhGlo_tSKwtaIfVIh-aJQ=='
-    }
-
-    dbi = DatabaseInteraction()
-    #  dbi.add_user(**new_user)
-    #  dbi.add_entry(**user_entry)
-    dbi.edit_entry(**entry_info)
